@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">MoodMirror – How are you feeling today?</h2>
+<form id="moodForm">
+  <div class="form-group">
+    <label for="mood">Select your mood:</label>
+    <select id="mood" name="mood" class="form-control" required>
+      <option value="">-- Choose --</option>
+      <option>Happy</option>
+      <option>Sad</option>
+      <option>Anxious</option>
+      <option>Excited</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="note">Journal Note (optional):</label>
+    <textarea id="note" name="note" class="form-control"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Log Mood</button>
+</form>
+<hr>
+<div id="suggestion" class="mt-4" style="display:none;">
+  <h4>Here’s something for you:</h4>
+  <p id="quote"></p>
+  <a id="playlist" href="#" target="_blank">Open Playlist 🎵</a>
+</div>
+<hr>
+<h4 class="mt-5">Your Mood History</h4>
+<ul class="list-group">
+  {% for entry in logs %}
+    <li class="list-group-item">
+      <strong>{{ entry.mood }}</strong> - {{ entry.note }} <br>
+      <small class="text-muted">{{ entry.date }}</small>
+    </li>
+  {% endfor %}
+</ul>
+<script>
+  $('#moodForm').on('submit', function(e) {
+    e.preventDefault();
+    const mood = $('#mood').val();
+    const note = $('#note').val();
+    if (!mood) return alert('Please select your mood.');
+  
+    $.ajax({
+      url: '/log',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ mood, note }),
+      success: function(response) {
+        $('#quote').text(response.quote);
+        $('#playlist').attr('href', response.playlist);
+        $('#suggestion').show();
+  
+        const currentDateTime = new Date().toLocaleString();
+  
+        // Add new mood entry to top of history list
+        const entryHtml = `
+          <li class="list-group-item">
+            <strong>${mood}</strong> - ${note ? note : '<em>No message</em>'}<br>
+            <small class="text-muted">${currentDateTime}</small>
+          </li>`;
+        
+        $('.list-group').prepend(entryHtml);  // insert at the top
+        $('#moodForm')[0].reset();            // clear the form
+      },
+      error: function() {
+        alert('Error logging mood. Try again.');
+      }
+    });
+  });
+  </script>  
+{% endblock %}

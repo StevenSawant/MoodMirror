@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Mood History</h2>
+
+{% if moods %}
+  <div class="list-group">
+    {% for mood in moods %}
+      <div class="list-group-item">
+        <h5 class="mb-1">
+          {{ mood.mood | capitalize }} 
+          <small class="text-muted float-right">{{ mood.date }}</small>
+        </h5>
+        {% if mood.message %}
+          <p class="mb-1">{{ mood.message }}</p>
+        {% else %}
+          <p class="mb-1 text-muted"><em>No message provided.</em></p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No mood entries yet. Start tracking how you feel!</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Back to Home</a>
+{% endblock %}
