@@ -105,7 +105,7 @@ MoodMirror/
 ## 👨‍💻 Author
 
 **Steven Datta Sawant**  
-2025 B.Tech. Student — MoodMirror Project  
+2026 B.Tech. Student — MoodMirror Project  
 Open for feedback & collaboration on GitHub!
 
 ---
