@@ -34,7 +34,7 @@ A Flask-based web app that helps users log their daily moods, write short notes,
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/MoodMirror.git
+   git clone https://github.com/StevenSawant/MoodMirror.git
    cd MoodMirror
    ```
 
